@@ -1,12 +1,17 @@
 // per HB, pull data in to console.log it, reference where it lives in reference to the .html file
 // Use the D3 library to read in `samples.json`
-https://www.tutorialsteacher.com/d3js/loading-data-from-file-in-d3js
-d3.json('samples.json', function(data) {
+// https://www.tutorialsteacher.com/d3js/loading-data-from-file-in-d3js
+d3.json('samples.json').then(data => {
   console.log(data);
-// });
 
-// d3.json('samples.json').then(data => {
-//   console.log(data);
+  var metadata = data.metadata;
+  console.log(metadata);
+  
+  var names = data.names;
+  console.log(names);
+
+  var samples = data.samples;
+  console.log(samples);
 
 // for the Bar
   // let smpl = data.samples[0].samples_values;
@@ -39,42 +44,44 @@ d3.json('samples.json', function(data) {
   var data = [trace];
 
   Plotly.newPlot('bar', data);
-  });
 
 // for the bubble
 
 // var plotData = `/samples/${sample}`;
 // d3.json(plotData).then(function (data) {
 
-// var plotData = d3.json('samples.json').then(data => {
+d3.json('samples.json').then(data => {
 
 // // build a Bubble Chart using the sample data
-//   var x_axis = plotData.data.otu_ids;
-//   var y_axis = plotData.data.sample_values;
-//   var size = plotData.data.sample_values;
-//   var color = plotData.data.otu_ids;
-//   var texts = plotData.data.otu_labels;
+  var x_axis = plotData.data.otu_ids;
+  var y_axis = plotData.data.sample_values;
+  var size = plotData.data.sample_values;
+  var color = plotData.data.otu_ids;
+  var texts = plotData.data.otu_labels;
 
-//   var bubble = {
-//     x: x_axis,
-//     y: y_axis,
-//     text: texts,
-//     mode: `markers`,
-//     marker: {
-//       size: size, 
-//       color: color
-//     }
-//   };
+  var bubble = {
+    x: x_axis,
+    y: y_axis,
+    text: texts,
+    mode: `markers`,
+    marker: {
+      size: size, 
+      color: color
+    }
+  };
     
-//   var data = [bubble];
+  var data = [bubble];
 
-//   var layout = {
-//     xaxis: {title: "OTU ID"}, 
-//     title: "Belly Button Bacteria"
-//   };
+  var layout = {
+    xaxis: {title: "OTU ID"}, 
+    title: "Belly Button Bacteria"
+  };
 
-//   Plotly.newPlot('bubble', data, layout);
-// });
+  Plotly.newPlot('bubble', data, layout);
+});
+
+
+}).catch(error => console.log(error));
 
 // ---------
 
