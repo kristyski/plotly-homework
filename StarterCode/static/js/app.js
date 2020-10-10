@@ -1,25 +1,92 @@
 // per HB, pull data in to console.log it, reference where it lives in reference to the .html file
+// Use the D3 library to read in `samples.json`
 d3.json('samples.json').then(data => {
-  console.log(data);
+//   console.log(data);
+
+// for the Bar
+// values = data.sample_values[0].sample_values
+
+
+// slicedData = data.slice(0,10);
+
+var trace = {
+    x: data.samples.sample_values[0].sample_values,
+    y: data.otu_ids,
+    type: 'bar',
+    text: data.otu_labels,
+    orientation: 'h'
+  };
+
+var data = [trace];
+
+Plotly.newPlot('bar', data);
+});
+
+// for the bubble
+
+// var plotData = `/samples/${sample}`;
+// d3.json(plotData).then(function (data) {
+
+// var plotData = d3.json('samples.json').then(data => {
+
+// // build a Bubble Chart using the sample data
+//   var x_axis = plotData.data.otu_ids;
+//   var y_axis = plotData.data.sample_values;
+//   var size = plotData.data.sample_values;
+//   var color = plotData.data.otu_ids;
+//   var texts = plotData.data.otu_labels;
+
+//   var bubble = {
+//     x: x_axis,
+//     y: y_axis,
+//     text: texts,
+//     mode: `markers`,
+//     marker: {
+//       size: size, 
+//       color: color
+//     }
+//   };
+    
+//   var data = [bubble];
+
+//   var layout = {
+//     xaxis: {title: "OTU ID"}, 
+//     title: "Belly Button Bacteria"
+//   };
+
+//   Plotly.newPlot('bubble', data, layout);
+// });
+
+// ---------
+
+
+// function updatePlotly(newdata){
+//   var BAR = document.getElementById("bar");
+//   Plotly.restyle(BAR, "values", (newdata);)
+// }
+
+// function getData(dataset) {
+//   var data = [];
+//   switch (dataset){
+//     case "?"
+//   }
+//   updatePlotly{data};
+// }
 
 // all goes code inside brackets; code outside of last bracket is going to run before promise (above) is fulfilled
-})
+// })
 
-
+// init();
 
 
 // // INSTRUCTIONS
-// In this assignment, you will build an interactive dashboard to explore the [Belly Button Biodiversity dataset](http://robdunnlab.com/projects/belly-button-biodiversity/), which catalogs the microbes that colonize human navels.
+// the dataset](http://robdunnlab.com/projects/belly-button-biodiversity/), which catalogs the microbes that colonize human navels.
 // The dataset reveals that a small handful of microbial species (also called operational taxonomic units, or OTUs, in the study) were present in more than 70% of people, while the rest were relatively rare.
-
 // ## Step 1: Plotly
-// 1. Use the D3 library to read in `samples.json`.
-
 // 2. Create a horizontal bar chart with a dropdown menu to display the top 10 OTUs found in that individual.
 // * Use `sample_values` as the values for the bar chart.
 // * Use `otu_ids` as the labels for the bar chart.
 // * Use `otu_labels` as the hovertext for the chart.
-//   ![bar Chart](Images/hw01.png)
 
 //   3. Create a bubble chart that displays each sample.
 // * Use `otu_ids` for the x values.
@@ -27,16 +94,11 @@ d3.json('samples.json').then(data => {
 // * Use `sample_values` for the marker size.
 // * Use `otu_ids` for the marker colors.
 // * Use `otu_labels` for the text values.
-// ![Bubble Chart](Images/bubble_chart.png)
 
 // 4. Display the sample metadata, i.e., an individual's demographic information.
 // 5. Display each key-value pair from the metadata JSON object somewhere on the page.
-// ![hw](Images/hw03.png)
-
 // 6. Update all of the plots any time that a new sample is selected.
-
 // Additionally, you are welcome to create any layout that you would like for your dashboard. An example dashboard is shown below:
-// ![hw](Images/hw02.png)
 
 // ## Deployment
 // * Deploy your app to a free static page hosting service, such as GitHub Pages. Submit the links to your deployment and your GitHub repo.
