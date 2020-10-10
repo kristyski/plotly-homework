@@ -1,26 +1,45 @@
 // per HB, pull data in to console.log it, reference where it lives in reference to the .html file
 // Use the D3 library to read in `samples.json`
-d3.json('samples.json').then(data => {
+https://www.tutorialsteacher.com/d3js/loading-data-from-file-in-d3js
+d3.json('samples.json', function(data) {
+  console.log(data);
+// });
+
+// d3.json('samples.json').then(data => {
 //   console.log(data);
 
 // for the Bar
-// values = data.sample_values[0].sample_values
+  // let smpl = data.samples[0].samples_values;
+  // let ids = data.samples[0].otu_ids;
+  // let lbls = data.samples[0].otu_labels;
 
+  // slicedSmpl = smpl.slice(0,10);
+  // slicedIds = ids.slice(0,10);
+  // slicedLbls = lbls.slice(0,10);
 
-// slicedData = data.slice(0,10);
+// reverseSlice = sliced.reverse();
 
-var trace = {
-    x: data.samples.sample_values[0].sample_values,
-    y: data.otu_ids,
+  var trace = {
+    x: data.samples[0].sample_values,
+    // x: sliced.samples_values,
+    // x: slicedSmpl.sample_values,
+    // x: slicedSmpl,
+    y: data.samples[0].otu_ids,
+    // y: sliced[0].otu_ids,
+    // y: slicedIds.otu_ids,
+    // y: slicedIds,
     type: 'bar',
-    text: data.otu_labels,
+    text: data.samples[0].otu_labels,
+    // text: sliced[0].otu_labels,
+    // text: slicedLbls.otu_labels,
+    // text: slicedLbls,
     orientation: 'h'
   };
 
-var data = [trace];
+  var data = [trace];
 
-Plotly.newPlot('bar', data);
-});
+  Plotly.newPlot('bar', data);
+  });
 
 // for the bubble
 
