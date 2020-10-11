@@ -1,122 +1,139 @@
-// per HB, pull data in to console.log it, reference where it lives in reference to the .html file
 // Use the D3 library to read in `samples.json`
-// https://www.tutorialsteacher.com/d3js/loading-data-from-file-in-d3js
-d3.json('samples.json').then(data => {
-  // console.log(data);
-
-// Get 'metadata' from the data
-  var metadata = data.metadata;
-  // console.log(metadata);
-  
-// Get test subject 'ids' from the data
-  var names = data.names;
-  // console.log(names);
-
-// Get the 'samples' from the data
-  var samples = data.samples;
-  // console.log(samples);
-
-// populate data into the Test Subject ID No. dropdown list
-// Select the d3 input element for the dropdown
-  const selection = d3.select("#selDataset");
-
-// Build Test Subject ID drop down
-  names.forEach(namevalue =>{
-    var option = selection.append("option");
-    option.text(namevalue);
-    option.attr("value", namevalue);
-  });
-  
-// 2. Create a horizontal bar chart with a dropdown menu to display the top 10 OTUs found in that individual.
-// * Use `sample_values` as the values for the bar chart.
-// * Use `otu_ids` as the labels for the bar chart.
-// * Use `otu_labels` as the hovertext for the chart.
-  let smpl = data.samples[0].sample_values;
-    console.log("smpl", smpl);
-  let ids = data.samples[0].otu_ids;
-  let lbls = data.samples[0].otu_labels;
-
-  var slicedSmpl = smpl.slice(0,10).reverse();
-  var slicedIds = ids.slice(0,10).reverse();
-  var slicedLbls = lbls.slice(0,10).reverse();
-
-// add OTU to ID, create string; not working yet
-  let otuidslist = slicedIds.map(otuid => 'OTU ' + otuid);
-
-  var trace1 = {
-    x: slicedSmpl,
-    y: otuidslist,
-    type: 'bar',
-    text: slicedLbls,
-    orientation: 'h'
-  };
-
-  var data = [trace1];
-
-  Plotly.newPlot("bar", data);
-
-
-//   3. Create a bubble chart that displays each sample.
-// * Use `otu_ids` for the x values.
-// * Use `sample_values` for the y values.
-// * Use `sample_values` for the marker size.
-// * Use `otu_ids` for the marker colors.
-// * Use `otu_labels` for the text values.
-
-
-// var plotData = `/samples/${sample}`;
-// d3.json(plotData).then(function (data) {
-
-// // use sample data
-  // var x_axis = plotData.data.otu_ids;
-  // var y_axis = plotData.data.sample_values;
-  // var size = plotData.data.sample_values;
-  // var color = plotData.data.otu_ids;
-  // var texts = plotData.data.otu_labels;
-
-  // var bubble = {
-  //   x: x_axis,
-  //   y: y_axis,
-  //   text: texts,
-  //   mode: `markers`,
-  //   marker: {
-  //     size: size, 
-  //     color: color
-  //   }
-  // };
+function barChart(sampleID) {
+  d3.json('samples.json').then(data => {
     
-  // var data = [bubble];
+    // Get 'metadata' from the data
+    var metadata = data.metadata;
+    
+    // Get test subject 'ids' from the data
+    var names = data.names;
+    
+    // Get the 'samples' from the data
+    var samples = data.samples;
+    
+    // filter data for the object with the desired sample number
+    var resultArray = samples.filter(sampleObj => sampleObj.id == sampleID);
+    var result = resultArray[0];
 
-  // var layout = {
-  //   xaxis: {title: "OTU ID"}, 
-  //   title: "Belly Button Bacteria"
-  // };
+    let smplBar = result.sample_values;
+    // console.log("smpl", smpl);
+    let idsBar = result.otu_ids;
+    let lblsBar = result.otu_labels;
 
-  // Plotly.newPlot('bubble', data, layout);
+    var slicedSmplBar = smplBar.slice(0, 10).reverse();
+    var slicedIdsBar = idsBar.slice(0, 10).reverse();
+    var slicedLblsBar = lblsBar.slice(0, 10).reverse();
+
+    // add OTU to ID, create string
+    let otuidslist = slicedIdsBar.map(otuid => 'OTU ' + otuid);
+
+  //2. create bar chart  
+    var trace1 = {
+      x: slicedSmplBar,
+      y: otuidslist,
+      type: 'bar',
+      text: slicedLblsBar,
+      orientation: 'h'
+    };
+
+    var data = [trace1];
+
+    Plotly.newPlot("bar", data);
+
+  }).catch(error => console.log(error));
+};
+    //   3. Create a bubble chart that displays each sample.
+function bubbleChart(sampleID) {
+  d3.json('samples.json').then(data => {
+    var metadata = data.metadata;
+    var names = data.names;
+    var samples = data.samples;
+
+    var resultArray = samples.filter(sampleObj => sampleObj.id == sampleID);
+    var result = resultArray[0];
+
+    let smplBubble = result.sample_values;
+    var idsBubble = result.otu_ids;
+    var lblsBubble = result.otu_labels;
+
+    var bubble = [
+      {
+      x: idsBubble,
+      y: smplBubble,
+      text: lblsBubble,
+      mode: `markers`,
+      marker: {
+        size: smplBubble, 
+        color: idsBubble
+        }
+      }
+    ];
+    
+    var layout = {
+      xaxis: {title: "OTU ID"}, 
+      margin: { t: 0 },
+      hovermode: "closest",
+      margin: { t: 30},
+      width: 1000,
+      showlegend: false,
+      title: "Belly Button Bacteria"
+    };
+    Plotly.newPlot('bubble', bubble, layout);
 
 }).catch(error => console.log(error));
+};
 
-
-// function updatePlotly(newdata){
-//   var BAR = document.getElementById("bar");
-//   Plotly.restyle(BAR, "values", (newdata);)
-// }
-
-// function getData(dataset) {
-//   var data = [];
-//   switch (dataset){
-//     case "?"
-//   }
-//   updatePlotly{data};
-// }
-
-// all goes code inside brackets; code outside of last bracket is going to run before promise (above) is fulfilled
-// })
-
-// init();
-
-
-// // INSTRUCTIONS
 // 4. Display the sample metadata, i.e., an individual's demographic information.
-// 5. Display each key-value pair from the metadata JSON object somewhere on the page.
-// 6. Update all of the plots any time that a new sample is selected.
+function buildMetadata(sampleID) {
+  d3.json("samples.json").then((data) => {
+    const metadata = data.metadata;
+
+    // filter data for the object with the desired sample number
+    var resultArray = metadata.filter(sampleObj => sampleObj.id == sampleID);
+    var result = resultArray[0];
+    
+    // Use d3 to select the panel with id of `#sample-metadata`
+    var PANEL = d3.select("#sample-metadata");
+    PANEL.html("");
+
+    // Use `Object.entries` to add each key and value pair to the panel
+    // Hint: Inside the loop, you will need to use d3 to append new
+    // tags for each key-value in the metadata.
+    Object.entries(result).forEach(([key, value]) => {
+      PANEL.append("h6").text(`${key.toUpperCase()}: ${value}`);
+    });
+  })
+}
+
+function init() {
+  // Grab a reference to the dropdown select element
+  var selector = d3.select("#selDataset");
+
+  // Use the list of sample names to populate the select options
+  d3.json("samples.json").then((data) => {
+    var sampleNames = data.names;
+    // console.log("names", data.names);
+
+    sampleNames.forEach((sample) => {
+      selector
+        .append("option")
+        .text(sample)
+        .property("value", sample);
+    });
+
+    // Use the first sample from the list to build the initial plots
+    var firstSample = sampleNames[0];
+    barChart(firstSample);
+    bubbleChart(firstSample);
+    buildMetadata(firstSample);
+  });
+}
+
+function optionChanged(newSample) {
+  // Fetch new data each time a new sample is selected
+  barChart(newSample);
+  bubbleChart(newSample);
+  buildMetadata(newSample);
+}
+
+init();
