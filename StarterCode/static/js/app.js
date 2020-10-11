@@ -4,14 +4,28 @@
 d3.json('samples.json').then(data => {
   console.log(data);
 
+// Get "metadata" from the data
   var metadata = data.metadata;
   console.log(metadata);
   
+// Get test subject "ids" from the data
   var names = data.names;
   console.log(names);
 
+// Get the "samples" from the data
   var samples = data.samples;
   console.log(samples);
+
+// populate data into the Test Subject ID dropdown list
+// Select the d3 input element for the dropdown
+  const selection = d3.select("#selDataset");
+
+// Build the Test Subject ID drop down list
+  names.forEach(namevalue =>{
+    var option = selection.append("option");
+    option.text(namevalue);
+    option.attr("value", namevalue);
+  });
 
 // for the Bar
   // let smpl = data.samples[0].samples_values;
@@ -24,20 +38,23 @@ d3.json('samples.json').then(data => {
 
 // reverseSlice = sliced.reverse();
 
+// Format OTU ID string
+  // let otuidslist = slicedIds.map(otuid => 'OTU ' + otuid);
+
   var trace = {
-    x: data.samples[0].sample_values,
+    // x: data.samples[0].sample_values,
     // x: sliced.samples_values,
     // x: slicedSmpl.sample_values,
-    // x: slicedSmpl,
-    y: data.samples[0].otu_ids,
+    x: slicedSmpl,
+    // y: data.samples[0].otu_ids,
     // y: sliced[0].otu_ids,
     // y: slicedIds.otu_ids,
-    // y: slicedIds,
+    y: otuidslist,
     type: 'bar',
-    text: data.samples[0].otu_labels,
+    // text: data.samples[0].otu_labels,
     // text: sliced[0].otu_labels,
     // text: slicedLbls.otu_labels,
-    // text: slicedLbls,
+    text: slicedLbls,
     orientation: 'h'
   };
 
@@ -49,8 +66,6 @@ d3.json('samples.json').then(data => {
 
 // var plotData = `/samples/${sample}`;
 // d3.json(plotData).then(function (data) {
-
-d3.json('samples.json').then(data => {
 
 // // build a Bubble Chart using the sample data
   var x_axis = plotData.data.otu_ids;
@@ -78,8 +93,6 @@ d3.json('samples.json').then(data => {
   };
 
   Plotly.newPlot('bubble', data, layout);
-});
-
 
 }).catch(error => console.log(error));
 
