@@ -1,3 +1,5 @@
+needed to submit this!! the GitHub link is https://kristyski.github.io/plotly-homework/StarterCode/index.html
+
 # Kristy Anderson
 # Data Analytics
 # October 11, 2020
